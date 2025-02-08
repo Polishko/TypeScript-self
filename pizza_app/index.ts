@@ -1,4 +1,5 @@
 type Pizza = {
+  id: number;
   name: string;
   price: number;
 };
@@ -6,14 +7,14 @@ type Pizza = {
 type Order = {
   id: number;
   pizza: Pizza;
-  status: string;
+  status: "ordered" | "completed"; // not any string but literal values
 };
 
-const menu = [
-  { name: "Margherita", price: 8 },
-  { name: "Pepperoni", price: 10 },
-  { name: "Hawaiian", price: 10 },
-  { name: "Veggie", price: 9 },
+const menu: Pizza[] = [
+  { id: 1, name: "Margherita", price: 8 },
+  { id: 2, name: "Pepperoni", price: 10 },
+  { id: 3, name: "Hawaiian", price: 10 },
+  { id: 4, name: "Veggie", price: 9 },
 ];
 
 let cashInRegister = 100;
@@ -56,8 +57,29 @@ function completeOrder(orderId: number) {
   return orderItem;
 }
 
-addNewpizzaObj({ name: "Spicy Sausage", price: 10 });
+export function getPizzaDetail(identifier: string | number) {
+  // type narrowing
+  const property: "name" | "id" =
+    typeof identifier === "number" ? "id" : "name";
+
+  const pizzaObj = menu.find((pizza) =>
+    typeof identifier === "string"
+      ? pizza[property] === identifier.toLowerCase()
+      : pizza[property] === identifier
+  );
+
+  if (!pizzaObj) {
+    console.error(`Pizza with ${identifier} not found`);
+    return;
+  }
+
+  return pizzaObj;
+}
+
+addNewpizzaObj({ id: 5, name: "Spicy Sausage", price: 10 });
 placeOrder("Spicy Sausage");
 completeOrder(5);
 completeOrder(1);
 console.log(cashInRegister);
+console.log(getPizzaDetail("Margherita"));
+console.log(getPizzaDetail(4));

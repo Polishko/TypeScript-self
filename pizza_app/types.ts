@@ -37,3 +37,11 @@ displayInfo(person1);
 
 let ages: number[] = [41, 34, 50, 25];
 let people: Person[] = [person1, person2];
+
+let myName = "Bob"; // generic string type
+const myName3 = "Bob"; // literal type "Bob" and value is "Bob"
+let myName2: "Bob" = "Bob"; // literal type "Bob" and can only have the literal type as a value
+
+// Unions
+type UserRole = "guest" | "member" | "admin"; // strict type definition using union
+let user: UserRole = "admin";
