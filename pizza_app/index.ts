@@ -64,7 +64,8 @@ export function getPizzaDetail(identifier: string | number) {
 
   const pizzaObj = menu.find((pizza) =>
     typeof identifier === "string"
-      ? pizza[property] === identifier.toLowerCase()
+      ? typeof pizza[property] === "string" &&
+        (pizza[property] as string).toLowerCase() === identifier.toLowerCase()
       : pizza[property] === identifier
   );
 
@@ -81,5 +82,5 @@ placeOrder("Spicy Sausage");
 completeOrder(5);
 completeOrder(1);
 console.log(cashInRegister);
-console.log(getPizzaDetail("Margherita"));
-console.log(getPizzaDetail(4));
+// console.log(getPizzaDetail("Margherita"));
+// console.log(getPizzaDetail(4));

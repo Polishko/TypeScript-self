@@ -1,26 +1,24 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPizzaDetail = getPizzaDetail;
-var menu = [
+const menu = [
     { id: 1, name: "Margherita", price: 8 },
     { id: 2, name: "Pepperoni", price: 10 },
     { id: 3, name: "Hawaiian", price: 10 },
     { id: 4, name: "Veggie", price: 9 },
 ];
-var cashInRegister = 100;
-var nextOrderId = 1;
-var orderHistory = [];
+let cashInRegister = 100;
+let nextOrderId = 1;
+const orderHistory = [];
 function addNewpizzaObj(pizzaObj) {
     menu.push(pizzaObj);
 }
 function placeOrder(pizzaName) {
-    var selectedPizza = menu.find(function (pizzaObj) { return pizzaObj.name === pizzaName; });
+    const selectedPizza = menu.find((pizzaObj) => pizzaObj.name === pizzaName);
     if (!selectedPizza) {
-        console.error("".concat(pizzaName, " does not wxist in the current menu"));
+        console.error(`${pizzaName} does not wxist in the current menu`);
         return;
     }
     cashInRegister += selectedPizza.price;
-    var newOrder = {
+    const newOrder = {
         id: nextOrderId++,
         pizza: selectedPizza,
         status: "ordered",
@@ -29,9 +27,9 @@ function placeOrder(pizzaName) {
     return selectedPizza;
 }
 function completeOrder(orderId) {
-    var orderItem = orderHistory.find(function (orderObj) { return orderObj.id === orderId; });
+    let orderItem = orderHistory.find((orderObj) => orderObj.id === orderId);
     if (!orderItem) {
-        console.error("Item with ".concat(orderId, " does not exist!"));
+        console.error(`Item with ${orderId} does not exist!`);
         return;
     }
     orderItem.status = "completed";
@@ -39,14 +37,13 @@ function completeOrder(orderId) {
 }
 function getPizzaDetail(identifier) {
     // type narrowing
-    var property = typeof identifier === "number" ? "id" : "name";
-    var pizzaObj = menu.find(function (pizza) {
-        return typeof identifier === "string"
-            ? pizza[property] === identifier.toLowerCase()
-            : pizza[property] === identifier;
-    });
+    const property = typeof identifier === "number" ? "id" : "name";
+    const pizzaObj = menu.find((pizza) => typeof identifier === "string"
+        ? typeof pizza[property] === "string" &&
+            pizza[property].toLowerCase() === identifier.toLowerCase() // Ensure it's a string
+        : pizza[property] === identifier);
     if (!pizzaObj) {
-        console.error("Pizza with ".concat(identifier, " not found"));
+        console.error(`Pizza with ${identifier} not found`);
         return;
     }
     return pizzaObj;
