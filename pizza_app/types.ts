@@ -43,5 +43,44 @@ const myName3 = "Bob"; // literal type "Bob" and value is "Bob"
 let myName2: "Bob" = "Bob"; // literal type "Bob" and can only have the literal type as a value
 
 // Unions
-type UserRole = "guest" | "member" | "admin"; // strict type definition using union
-let user: UserRole = "admin";
+type UserRole = "member" | "contributor" | "admin"; // strict type definition using union
+
+type User = {
+  id: number;
+  username: string;
+  role: UserRole;
+};
+
+type UpdatedUser = Partial<User>; // Utility type example
+
+const users: User[] = [
+  { id: 1, username: "john_doe", role: "member" },
+  { id: 2, username: "john_smith", role: "contributor" },
+  { id: 3, username: "jane_doe", role: "admin" },
+  { id: 4, username: "guest_user", role: "member" },
+];
+
+function fetchUserDetails(username: string): User {
+  const user = users.find(
+    (user) => user.username.toLowerCase() === username.toLowerCase()
+  );
+
+  if (!user) {
+    throw new Error(`The user with ${username} does not exist!`);
+  }
+
+  return user;
+}
+
+function updateUser(id: number, updates: UpdatedUser) {
+  const user = users.find((user) => user.id === id);
+  if (!user) {
+    throw new Error(`User with id ${id} does not exist!`);
+  } else {
+    Object.assign(user, updates);
+  }
+}
+
+updateUser(1, { username: "new_john_doe" });
+updateUser(4, { role: "contributor" });
+console.log(users);
