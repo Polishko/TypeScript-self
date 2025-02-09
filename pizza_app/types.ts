@@ -52,12 +52,15 @@ type User = {
 };
 
 type UpdatedUser = Partial<User>; // Utility type example
+type NewUser = Partial<User>;
+
+let nextUserId = 1;
 
 const users: User[] = [
-  { id: 1, username: "john_doe", role: "member" },
-  { id: 2, username: "john_smith", role: "contributor" },
-  { id: 3, username: "jane_doe", role: "admin" },
-  { id: 4, username: "guest_user", role: "member" },
+  { id: nextUserId++, username: "john_doe", role: "member" },
+  { id: nextUserId++, username: "john_smith", role: "contributor" },
+  { id: nextUserId++, username: "jane_doe", role: "admin" },
+  { id: nextUserId++, username: "guest_user", role: "member" },
 ];
 
 function fetchUserDetails(username: string): User {
@@ -81,6 +84,17 @@ function updateUser(id: number, updates: UpdatedUser) {
   }
 }
 
+function addNewUser(newUser: any): User {
+  const user = {
+    id: nextUserId++,
+    ...newUser,
+  };
+
+  users.push(user);
+  return user;
+}
+
 updateUser(1, { username: "new_john_doe" });
 updateUser(4, { role: "contributor" });
+addNewUser({ username: "jane_smoe", role: "member" });
 console.log(users);
