@@ -84,7 +84,8 @@ function updateUser(id: number, updates: UpdatedUser) {
   }
 }
 
-function addNewUser(newUser: any): User {
+function addNewUser(newUser: Omit<User, "id">): User {
+  // Omit: provide all User props except the id as a string
   const user = {
     id: nextUserId++,
     ...newUser,

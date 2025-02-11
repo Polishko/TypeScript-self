@@ -1,15 +1,20 @@
 "use strict";
-const menu = [
-    { id: 1, name: "Margherita", price: 8 },
-    { id: 2, name: "Pepperoni", price: 10 },
-    { id: 3, name: "Hawaiian", price: 10 },
-    { id: 4, name: "Veggie", price: 9 },
-];
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPizzaDetail = getPizzaDetail;
 let cashInRegister = 100;
 let nextOrderId = 1;
+let nextPizzaId = 1;
 const orderHistory = [];
+const menu = [
+    { id: nextPizzaId++, name: "Margherita", price: 8 },
+    { id: nextPizzaId++, name: "Pepperoni", price: 10 },
+    { id: nextPizzaId++, name: "Hawaiian", price: 10 },
+    { id: nextPizzaId++, name: "Veggie", price: 9 },
+];
 function addNewpizzaObj(pizzaObj) {
-    menu.push(pizzaObj);
+    const newPizza = Object.assign({ id: nextPizzaId++ }, pizzaObj);
+    menu.push(newPizza);
+    return newPizza;
 }
 function placeOrder(pizzaName) {
     const selectedPizza = menu.find((pizzaObj) => pizzaObj.name === pizzaName);
@@ -37,21 +42,21 @@ function completeOrder(orderId) {
 }
 function getPizzaDetail(identifier) {
     // type narrowing
-    const property = typeof identifier === "number" ? "id" : "name";
-    const pizzaObj = menu.find((pizza) => typeof identifier === "string"
-        ? typeof pizza[property] === "string" &&
-            pizza[property].toLowerCase() === identifier.toLowerCase() // Ensure it's a string
-        : pizza[property] === identifier);
-    if (!pizzaObj) {
-        console.error(`Pizza with ${identifier} not found`);
-        return;
+    if (typeof identifier === "string") {
+        return menu.find((pizza) => pizza.name.toLowerCase() === identifier.toLowerCase());
     }
-    return pizzaObj;
+    else if (typeof identifier === "number") {
+        return menu.find((pizza) => pizza.id === identifier);
+    }
+    else {
+        throw new TypeError("The identifier must be a string or a number");
+    }
 }
-addNewpizzaObj({ id: 5, name: "Spicy Sausage", price: 10 });
+addNewpizzaObj({ name: "Spicy Sausage", price: 10 });
 placeOrder("Spicy Sausage");
 completeOrder(5);
 completeOrder(1);
 console.log(cashInRegister);
-console.log(getPizzaDetail("Margherita"));
-console.log(getPizzaDetail(4));
+// console.log(getPizzaDetail("Margherita"));
+// console.log(getPizzaDetail(4));
+console.log(menu);
