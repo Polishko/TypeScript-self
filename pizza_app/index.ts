@@ -50,6 +50,22 @@ function placeOrder(pizzaName: string): Pizza | undefined {
   return selectedPizza;
 }
 
+// Generics example
+function addToArray<T>(array: T[], item: T): T[] | undefined {
+  array.push(item);
+  return array;
+}
+
+let orderQueue: Order[] = [];
+addToArray(menu, { id: nextPizzaId, name: "Chicken Bacon Ranch", price: 12 });
+addToArray<Order>(orderQueue, {
+  id: nextOrderId++,
+  pizza: menu[2],
+  // status: "done",
+  status: "completed",
+});
+// End of generics example
+
 function completeOrder(orderId: number): Order | undefined {
   let orderItem = orderHistory.find((orderObj) => orderObj.id === orderId);
   if (!orderItem) {
